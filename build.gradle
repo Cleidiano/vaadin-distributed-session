@@ -1,0 +1,57 @@
+buildscript {
+    ext {
+        springBootVersion = '2.0.6.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+plugins {
+    id "net.saliman.cobertura" version "2.2.8"
+    id 'io.franzbecker.gradle-lombok' version '1.14'
+}
+
+apply plugin: 'war'
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+
+group 'br.com.investigate'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'http://maven.vaadin.com/vaadin-addons'
+    }
+}
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile('com.vaadin:vaadin-spring-boot-starter:1.2.0')
+    compile("org.springframework.boot:spring-boot-starter-data-redis")
+    compile("org.springframework.session:spring-session-data-redis")
+    compile('com.vaadin:vaadin-push:7.7.13')
+
+    providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
+
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "com.vaadin:vaadin-bom:7.7.13"
+    }
+}
+
+bootRun {
+    sourceResources sourceSets.main
+}
